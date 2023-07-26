@@ -1,3 +1,0 @@
-write_all_props() {
-    for i in $(xlsclients -al | grep '^Window' | tr : ' ' | cut -d ' ' -f 2); xprop -id $i > prop.$i
-}

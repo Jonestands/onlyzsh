@@ -1,3 +1,0 @@
-profnose() {
-    python -m cProfile -o pstats $(which nosetests) "$@"
-}

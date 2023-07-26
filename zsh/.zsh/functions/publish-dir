@@ -1,4 +1,0 @@
-publish-dir() {
-    if [[ $# -ne 2 ]]; then echo "usage: $0 dir port"; return; fi
-    ( builtin cd $1 && python -m SimpleHTTPServer $2 )
-}

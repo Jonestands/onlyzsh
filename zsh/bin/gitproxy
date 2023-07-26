@@ -1,3 +1,0 @@
-#exec socat STDIO PROXY:www.fluffypenguin.org:$1:$2,proxyport=55555
-exec socat STDIO SOCKS4:localhost:$1:$2,socksport=55555
-
