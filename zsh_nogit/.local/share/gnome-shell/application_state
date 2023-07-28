@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<application-state>
+  <context id="">
+    <application id="bytedance-feishu.desktop" score="3920.1372680664062" last-seen="1660010956"/>
+    <application id="org.gnome.Evince.desktop" score="12.5" last-seen="1659448155"/>
+    <application id="org.gnome.FileRoller.desktop" score="1.71875" last-seen="1659927801"/>
+    <application id="google-chrome.desktop" score="7798.44140625" last-seen="1660014818"/>
+    <application id="gnome-control-center.desktop" score="612.85317230224609" last-seen="1659925340"/>
+    <application id="org.gnome.gedit.desktop" score="418.625" last-seen="1659965089"/>
+    <application id="org.gnome.eog.desktop" score="4" last-seen="1659608944"/>
+    <application id="libreoffice-calc.desktop" score="24.5" last-seen="1659525660"/>
+    <application id="org.gnome.Nautilus.desktop" score="778.43894958496094" last-seen="1659965131"/>
+    <application id="update-manager.desktop" score="1" last-seen="1659517228"/>
+    <application id="snap-store_ubuntu-software.desktop" score="2.875" last-seen="1659517249"/>
+    <application id="org.gnome.Calculator.desktop" score="58" last-seen="1659930553"/>
+    <application id="org.gnome.Terminal.desktop" score="7978.4220123291016" last-seen="1660015368"/>
+    <application id="code_code.desktop" score="15978.380126953125" last-seen="1659965097"/>
+    <application id="gkbd-keyboard-display.desktop" score="0" last-seen="1659507896"/>
+  </context>
+</application-state>

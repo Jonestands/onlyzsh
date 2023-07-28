@@ -1,0 +1,139 @@
+#
+# A minimal two-color theme.
+#
+# Authors:
+#   Kevin Laude <nerfyoda@gmail.com>
+#
+# Features:
+#   - One line, left aligned.
+#   - The prompt is prefixed by a character sequence of your choice.
+#   - Only displays the current directory instead of the full path.
+#   - Displays the current branch when in a git project (this requires loading
+#     the git module before prompt in ${ZDOTDIR:-$HOME}/.zpreztorc).
+#   - Displays a character at the end of the prompt when in a git project with
+#     "dirty" files.
+#
+# Usage:
+#   This prompt's prefix symbol and colors are customizable:
+#     prompt cloud [<symbol>] [<color1>] [<color2>]
+#
+#   In ${ZDOTDIR:-$HOME}/.zpreztorc:
+#     zstyle ':prezto:module:prompt' theme 'cloud' \
+#       ['<symbol>'] \
+#       ['<color1>'] \
+#       ['<color2>']
+#
+#   If these options are not provided, the symbol defaults to "☁" with colors
+#   cyan and green.
+#
+# Screenshots:
+#   http://i.imgur.com/mJCZ8rE.png
+#
+# Note:
+#   This is a port of the oh-my-zsh cloud theme, originally written by Phillip
+#   Ridlen <p@rdln.net> and Mark Drago <markdrago@gmail.com>
+#
+
+# Load dependencies.
+pmodload 'helper'
+
+function prompt_cloud_precmd {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+
+  # Get Git repository information.
+  if (( $+functions[git-info] )); then
+      git-info
+  fi
+}
+
+function prompt_cloud_help {
+  cat <<EOT
+This prompt's prefix symbol and colors are customizable:
+
+  prompt cloud [<symbol>] [<color1>] [<color2>]
+
+In ${ZDOTDIR:-$HOME}/.zpreztorc:
+  zstyle ':prezto:module:prompt' theme 'cloud' ['<symbol>'] ['<color1>'] ['<color2>']
+
+If these options are not provided, the symbol defaults to ☁ with colors cyan
+and green.
+EOT
+}
+
+function prompt_cloud_preview {
+  if (( $# > 0 )); then
+    prompt_preview_theme 'cloud' ">" "yellow" "red"
+  else
+    prompt_preview_theme 'cloud'
+    print
+    prompt_preview_theme 'cloud' "✯"
+    print
+    prompt_preview_theme 'cloud' "$@"
+  fi
+}
+
+function prompt_cloud_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent sp subst)
+
+  # Set the theme prefix to a cloud or to the user's given characters.
+  if [[ -n "$1" ]]; then
+    prefix="$1"
+  else
+    prefix='☁'
+  fi
+
+  # Assign colors.
+  if [[ -n "$2" ]]; then
+    primary_color="$2"
+  else
+    primary_color='cyan'
+  fi
+
+  if [[ -n "$3" ]]; then
+    secondary_color="$3"
+  else
+    secondary_color='green'
+  fi
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
+  # Add hook for calling git-info before each command.
+  add-zsh-hook precmd prompt_cloud_precmd
+
+  # Tell prezto we can manage this prompt
+  zstyle ':prezto:module:prompt' managed 'yes'
+  # Set editor-info parameters.
+  zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{1}❯%F{3}❯%F{2}❯%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{3}♺%f'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%F{2}❮%F{3}❮%F{1}❮%f%b'
+
+  # Set git-info parameters.
+  zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
+  zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
+  zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
+  zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
+  zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
+  zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
+  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
+  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
+  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
+  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
+  zstyle ':prezto:module:git:info:keys' format \
+    'status' '$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u'
+
+    # Define prompts.
+  PROMPT='%B%F{$primary_color}${prefix}%f%b  %B%F{$secondary_color}%c%f%b ${git_info:+${(e)git_info[prompt]}} '
+  RPROMPT=''
+}
+
+prompt_cloud_setup ">" "yellow" "red"
+# vim: ft=zsh
